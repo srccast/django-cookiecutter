@@ -1,0 +1,6 @@
+flask
+docker
+bootstrap-flask
+Flask-WTF
+pyyaml
+python-dotenv
