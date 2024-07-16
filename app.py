@@ -11,9 +11,11 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, send_file
 from flask_bootstrap import Bootstrap5
 from flask_wtf import CSRFProtect, FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.fields.choices import SelectField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, widgets
+from wtforms.fields.choices import SelectField, SelectMultipleField
+from wtforms.validators import URL, DataRequired, Email
+
+ADDITIONAL_OPTIONS_KW = {"class": "additional-options"}
 
 load_dotenv()
 
@@ -27,36 +29,32 @@ csrf = CSRFProtect(app)
 
 
 class YesNoField(SelectField):
-    def __init__(self, *args, default="n", **kwargs):
+    def __init__(self, *args, default="no", **kwargs):
         super().__init__(
             *args,
             choices=[
-                ("y", "yes"),
-                ("n", "no"),
+                "yes",
+                "no",
             ],
             default=default,
             **kwargs,
         )
 
 
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
+
 class CookieCutterForm(FlaskForm):
-    project_name = StringField(validators=[DataRequired()])
+    project_name = StringField(
+        validators=[DataRequired()],
+    )
     project_slug = StringField(validators=[DataRequired()])
     description = StringField(validators=[DataRequired()])
     author_name = StringField(validators=[DataRequired()])
-    domain_name = StringField(validators=[DataRequired()])
-    email = StringField(validators=[DataRequired()])
-    version = StringField(validators=[DataRequired()])
-    open_source_license = SelectField(
-        choices=[
-            "MIT",
-            "BSD",
-            "GPLv3",
-            "Apache Software License 2.0",
-            "Not open source",
-        ],
-        validators=[DataRequired()],
-    )
+    domain_name = StringField(validators=[DataRequired(), URL()])
+    email = StringField(validators=[DataRequired(), Email()])
     username_type = SelectField(
         choices=[
             "username",
@@ -64,8 +62,6 @@ class CookieCutterForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    timezone = StringField(default="UTC")
-    windows = YesNoField()
     editor = SelectField(
         choices=[
             "None",
@@ -73,8 +69,9 @@ class CookieCutterForm(FlaskForm):
             "VS Code",
         ],
         validators=[DataRequired()],
+        default="None",
     )
-    use_docker = YesNoField()
+    use_docker = YesNoField(default="yes")
     postgresql_version = SelectField(
         choices=[
             "16",
@@ -82,17 +79,10 @@ class CookieCutterForm(FlaskForm):
             "14",
             "13",
             "12",
-        ]
-    )
-    cloud_provider = SelectField(
-        choices=[
-            "AWS",
-            "GCP",
-            "Azure",
-            "None",
         ],
-        validators=[DataRequired()],
+        default="16",
     )
+
     mail_service = SelectField(
         choices=[
             "Mailgun",
@@ -107,22 +97,9 @@ class CookieCutterForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    use_async = YesNoField(default="no")
-    use_drf = YesNoField(default="no")
-    frontend_pipeline = SelectField(
-        choices=[
-            "None",
-            "Django Compressor",
-            "Gulp",
-            "Webpack",
-        ],
-        validators=[DataRequired()],
-    )
-    use_celery = YesNoField()
-    use_mailpit = YesNoField()
-    use_sentry = YesNoField()
-    use_whitenoise = YesNoField()
-    use_heroku = YesNoField()
+    use_celery = YesNoField(default="yes")
+    use_sentry = YesNoField(default="yes")
+
     ci_tool = SelectField(
         choices=[
             "None",
@@ -132,9 +109,73 @@ class CookieCutterForm(FlaskForm):
             "Drone",
         ],
         validators=[DataRequired()],
+        label="CI tool",
     )
-    keep_local_envs_in_vcs = YesNoField()
-    debug = YesNoField()
+
+    # additional options
+    keep_local_envs_in_vcs = YesNoField(default="yes", render_kw=ADDITIONAL_OPTIONS_KW)
+    version = StringField(
+        validators=[DataRequired()], render_kw=ADDITIONAL_OPTIONS_KW, default="0.1"
+    )
+    open_source_license = SelectField(
+        choices=[
+            "MIT",
+            "BSD",
+            "GPLv3",
+            "Apache Software License 2.0",
+            "Not open source",
+        ],
+        validators=[DataRequired()],
+        default="Not open source",
+        render_kw=ADDITIONAL_OPTIONS_KW,
+    )
+    timezone = StringField(default="UTC", render_kw=ADDITIONAL_OPTIONS_KW)
+    windows = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+
+    use_async = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+    use_drf = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+
+    cloud_provider = SelectField(
+        choices=[
+            "AWS",
+            "GCP",
+            "Azure",
+            "None",
+        ],
+        validators=[DataRequired()],
+        default="None",
+        render_kw=ADDITIONAL_OPTIONS_KW,
+    )
+
+    frontend_pipeline = SelectField(
+        choices=[
+            "None",
+            "Django Compressor",
+            "Gulp",
+            "Webpack",
+        ],
+        validators=[DataRequired()],
+        default="None",
+        render_kw=ADDITIONAL_OPTIONS_KW,
+    )
+
+    use_mailpit = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+
+    use_whitenoise = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+    use_heroku = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+
+    debug = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+
+    additional_requirements = MultiCheckboxField(
+        choices=[
+            "pytest",
+            "pytest-django",
+            "model_bakery",
+            "responses",
+            "pytest-responses",
+            "freezegun",
+        ]
+    )
     submit = SubmitField("Submit")
 
 
