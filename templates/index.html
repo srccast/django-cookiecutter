@@ -17,17 +17,141 @@
         body {
             background: #e8f1f9;
         }
+
+        .sticky-top {
+            top: 5em;
+        }
     </style>
+
+    <script>
+        function showHelpPrompt(name, description) {
+            document.querySelector("#helpbox").classList.remove("d-none");
+            document.querySelector("#card-title").textContent = name;
+            document.querySelector("#card-body").textContent = description;
+        }
+
+        const FIELD_CONFIG = {
+            "project_name": {
+                "description": "Your project’s human-readable name, capitals and spaces allowed.",
+            },
+            "project_slug": {
+                "description": `Your project’s slug without dashes or spaces. Used to name your repo and in other places
+                where a Python-importable version of your project name is needed.`
+            },
+            "description": {
+                "description": "Describes your project and gets used in places like README.rst and such."
+            },
+            "author_name": {
+                "description": "This is you! The value goes into places like LICENSE and such."
+            },
+            "domain_name": {
+                "description": `The domain name you plan to use for your project once it goes live.
+                Note that it can be safely changed later on whenever you need to.`
+            },
+            "email": {
+                "description": "The email address you want to identify yourself in the project."
+            },
+            "username_type": {
+                "description": `The type of username you want to use in the project. This can be either username or email.
+                If you choose username, the email field will be included.
+                If you choose email, the username field will be excluded.
+                It is best practice to always include an email field, so there is no option for having
+                just the username field.`
+            },
+            "editor": {"description": "Select an editor to use."},
+            "use_docker": {
+                "description": `Indicates whether the project should be configured to use Docker,
+                Docker Compose and devcontainer.`
+            },
+            "postgresql_version": {"description": "Select a PostgreSQL version to use."},
+            "mail_service": {
+                "description": "Select an email service that Django-Anymail provides."
+            },
+            "use_celery": {
+                "description": "Indicates whether the project should be configured to use Celery."
+            },
+            "use_sentry": {
+                "description": "Indicates whether the project should be configured to use Sentry."
+            },
+            "ci_tool": {"description": "Select a CI tool for running tests."},
+            "keep_local_envs_in_vcs": {
+                "description": `Indicates whether the project’s .envs/.local/ should be kept in VCS (comes in handy when
+                working in teams where local environment reproducibility is strongly encouraged).
+                Note: .env(s) are only utilized when Docker Compose and/or Heroku support is enabled.`
+            },
+            "version": {"description": "The version of the project at its inception."},
+            "open_source_license": {"description": "A software license for the project."},
+            "timezone": {
+                "description": "The value to be used for the TIME_ZONE setting of the project."
+            },
+            "windows": {
+                "description": "Indicates whether the project should be configured for development on Windows."
+            },
+            "use_async": {
+                "description": "Indicates whether the project should use web sockets with Uvicorn + Gunicorn."
+            },
+            "use_drf": {
+                "description": "Indicates whether the project should be configured to use Django Rest Framework."
+            },
+            "cloud_provider": {
+                "description": `Select a cloud provider for static & media files. If you choose no cloud provider and docker,
+                the production stack will serve the media files via an nginx Docker service.
+                Without Docker, the media files won’t work.`
+            },
+            "frontend_pipeline": {
+                "description": "Select a pipeline to compile and optimise frontend assets (JS, CSS, …)"
+            },
+            "use_mailpit": {
+                "description": "Indicates whether the project should be configured to use Mailpit."
+            },
+            "use_whitenoise": {
+                "description": "Indicates whether the project should be configured to use WhiteNoise."
+            },
+            "use_heroku": {
+                "description": "Indicates whether the project should be configured so as to be deployable to Heroku."
+            },
+            "debug": {
+                "description": `Indicates whether the project should be configured for debugging.
+                This option is relevant for Cookiecutter Django developers only.`
+            },
+        }
+    </script>
 </head>
 <body>
 {% block content %}
     <div class="container">
-        <div class="row w-50">
-            <h1>Django cookiecutter online</h1>
-            {{ render_form(form) }}
+        <div class="row">
+            <div class="col-6">
+                <h1>Django cookiecutter online</h1>
+                {{ render_form(form) }}
+            </div>
+            <div class="col-6 pt-3 d-none" id="helpbox">
+                <div class="card mx-auto my-4 sticky-top">
+                    <div class="card-body">
+                        <h5 id="card-title" class="card-title">Card title</h5>
+                        <p id="card-body" class="card-text">Some quick example text to build on the card title and make
+                            up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 {{ bootstrap.load_js() }}
+<script>
+    function attachOnclickListener() {
+        const elements = document.querySelectorAll(".mb-3");
+        elements.forEach(function (element) {
+            const displayName = element.children[0].textContent
+            const name = element.children[1].name
+            element.onclick = function () {
+                showHelpPrompt(displayName, FIELD_CONFIG[name]["description"])
+            }
+        })
+    }
+
+    attachOnclickListener();
+    {#[... document.getElementsByClassName("additional-options")].map(function(element){element.parentElement.classList.add("d-none")})#}
+</script>
 </body>
 </html>
