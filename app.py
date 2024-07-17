@@ -166,16 +166,6 @@ class CookieCutterForm(FlaskForm):
 
     debug = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
 
-    additional_requirements = MultiCheckboxField(
-        choices=[
-            "pytest",
-            "pytest-django",
-            "model_bakery",
-            "responses",
-            "pytest-responses",
-            "freezegun",
-        ]
-    )
     submit = SubmitField("Submit")
 
 
@@ -194,7 +184,7 @@ def index_post():
 
     data = {"default_context": form.data}
 
-    with TemporaryDirectory(dir="/tmp") as temp_dir:
+    with TemporaryDirectory(dir="/data") as temp_dir:
         temp_dir_path = Path(temp_dir)
         with open(temp_dir_path / "config.yaml", "w") as cookiecutter_file:
             yaml.dump(data, cookiecutter_file)
