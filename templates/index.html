@@ -30,6 +30,19 @@
             document.querySelector("#card-body").textContent = description;
         }
 
+        function showAdditionalOptions(){
+            const element = document.querySelector("#showAdvancedOptionsToggle");
+            if(element.checked){
+                [... document.getElementsByClassName("additional-options")].map(
+                    function(element){element.parentElement.classList.remove("d-none")}
+                );
+            }else{
+                [... document.getElementsByClassName("additional-options")].map(
+                    function(element){element.parentElement.classList.add("d-none")}
+                );
+            }
+        };
+
         const FIELD_CONFIG = {
             "project_name": {
                 "description": "Your project’s human-readable name, capitals and spaces allowed.",
@@ -119,19 +132,26 @@
 </head>
 <body>
 {% block content %}
-    <div class="container">
+    <div class="container p-3">
         <div class="row">
-            <div class="col-6">
+            <div class="col">
                 <h1>Django cookiecutter online</h1>
                 {{ render_form(form) }}
             </div>
-            <div class="col-6 pt-3 d-none" id="helpbox">
-                <div class="card mx-auto my-4 sticky-top">
-                    <div class="card-body">
-                        <h5 id="card-title" class="card-title">Card title</h5>
-                        <p id="card-body" class="card-text">Some quick example text to build on the card title and make
-                            up the bulk of the card's content.</p>
+            <div class="col pt-3">
+                <div class="sticky-top p-6">
+                    <div class="card d-none" id="helpbox">
+                        <div class="card-body">
+                            <h5 id="card-title" class="card-title">Card title</h5>
+                            <p id="card-body" class="card-text">Some quick example text to build on the card title and make
+                                up the bulk of the card's content.</p>
+                        </div>
                     </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="showAdvancedOptionsToggle">
+                        <label class="form-check-label" for="showAdvancedOptionsToggle">Show advanced options</label>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -149,9 +169,17 @@
             }
         })
     }
-
     attachOnclickListener();
-    {#[... document.getElementsByClassName("additional-options")].map(function(element){element.parentElement.classList.add("d-none")})#}
+
+    function initialAdditionalOptions(){
+        const element = document.getElementById("showAdvancedOptionsToggle");
+        element.onchange = showAdditionalOptions;
+    }
+    initialAdditionalOptions();
+
+    [... document.getElementsByClassName("additional-options")].map(
+        function(element){element.parentElement.classList.add("d-none")}
+    );
 </script>
 </body>
 </html>
