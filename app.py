@@ -188,7 +188,7 @@ def index_get():
 def index_post():
     form = CookieCutterForm()
     if not form.validate_on_submit():
-        raise ValueError("validation error")
+        return render_template("index.html", form=form)
 
     client = docker.DockerClient.from_env()
 
