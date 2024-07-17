@@ -2,6 +2,7 @@ services:
   web:
     build:
       context: .
+      target: app
     depends_on:
       - docker
     command: flask run
@@ -16,6 +17,8 @@ services:
           path: app.py
     volumes:
       - data:/data
+    env_file:
+      - .env
 
   docker:
     image: docker:dind
@@ -23,6 +26,16 @@ services:
     entrypoint: dockerd --host tcp://0.0.0.0:2375
     volumes:
       - data:/data
+
+  cookiecutter_build:
+    build:
+      context: .
+      target: cookiecutter_builder
+    volumes:
+      - ./Dockerfile:/data/Dockerfile
+    command: wait-for-it docker:2375 -t 30 -s -- docker --host=tcp://docker:2375 build /data -t python3.12_cookiecutter --target cookiecutter
+    depends_on:
+      - docker
 
 volumes:
   data: {}
