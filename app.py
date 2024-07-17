@@ -194,7 +194,7 @@ def index_post():
 
     data = {"default_context": form.data}
 
-    with TemporaryDirectory(dir="/tmp", delete=False) as temp_dir:
+    with TemporaryDirectory(dir="/tmp") as temp_dir:
         temp_dir_path = Path(temp_dir)
         with open(temp_dir_path / "config.yaml", "w") as cookiecutter_file:
             yaml.dump(data, cookiecutter_file)
@@ -206,9 +206,9 @@ def index_post():
 
         out_f = io.BytesIO()
 
-        with ZipFile(out_f, mode="x", compression=zipfile.ZIP_DEFLATED) as zip:
+        with ZipFile(out_f, mode="x", compression=zipfile.ZIP_DEFLATED) as zip_file:
             for entry in temp_dir_path.glob("**/*"):
-                zip.write(entry, arcname=entry.relative_to(temp_dir_path))
+                zip_file.write(entry, arcname=entry.relative_to(temp_dir_path))
 
         out_f.seek(0)
         return send_file(
