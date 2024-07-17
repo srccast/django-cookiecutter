@@ -206,3 +206,8 @@ def index_post():
             mimetype="application/zip",
             download_name="django-cookiecutter.zip",
         )
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_file("favicon.ico", mimetype="image/x-icon")
