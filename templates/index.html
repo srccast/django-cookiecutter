@@ -1,20 +1,14 @@
 {% from 'bootstrap5/form.html' import render_form %}
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>
-        {% block title %}
-            Django Cookiecutter
-        {% endblock %}
-    </title>
-
-    {{ bootstrap.load_css() }}
-
-    <style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %}Django Cookiecutter{% endblock %}
+        </title>
+        {{ bootstrap.load_css() }}
+        <style>
         body {
             background: #e8f1f9;
         }
@@ -22,11 +16,11 @@
         .sticky-top {
             top: 5em;
         }
-    </style>
-
-    <script>
+        </style>
+        <script>
         function showHelpPrompt(name, description) {
             document.querySelector("#helpbox").classList.remove("d-none");
+            document.querySelector("#faqbox").classList.add("d-none");
             document.querySelector("#card-title").textContent = name;
             document.querySelector("#card-body").textContent = description;
         }
@@ -129,37 +123,69 @@
                 This option is relevant for Cookiecutter Django developers only.`
             },
         }
-    </script>
-</head>
-<body>
-{% block content %}
-    <div class="container p-3">
-        <div class="row">
-            <div class="col">
-                <h1>Django cookiecutter online</h1>
-                {{ render_form(form) }}
-            </div>
-            <div class="col pt-3">
-                <div class="sticky-top p-6">
-                    <div class="card d-none" id="helpbox">
-                        <div class="card-body">
-                            <h5 id="card-title" class="card-title">Card title</h5>
-                            <p id="card-body" class="card-text">Some quick example text to build on the card title and make
-                                up the bulk of the card's content.</p>
+        </script>
+    </head>
+    <body>
+        {% block content %}
+            <div class="container p-3">
+                <div class="row">
+                    <div class="col">
+                        <h1>Django Cookiecutter online</h1>
+                        {{ render_form(form) }}
+                    </div>
+                    <div class="col pt-3">
+                        <div class="sticky-top p-6">
+                            <div class="card" id="faqbox">
+                                <div class="card-body">
+                                    <h5 class="card-title">Welcome to Django Cookiecutter online</h5>
+                                    <p class="card-text">
+                                        <h6>What is Django Cookiecutter?</h6>
+                                        <p>
+                                            Django Cookiecutter is a project template for Django,
+                                            a high-level Python web framework. It provides a pre-configured,
+                                            best-practices setup to help developers quickly start new Django projects
+                                            with a focus on code quality, scalability, and maintainability.
+                                            Why should I use Django Cookiecutter?
+                                        </p>
+                                        <h6>How to use Django Cookiecutter online?</h6>
+                                        <p>
+                                            To use Django Cookiecutter simply fill out the form to the left, then hit
+                                            submit and we'll prepare your repository as a zip file for you to download.
+                                            Click any field to receive a short explanation what it's used for.
+                                        </p>
+                                        <h6>Using Django Cookiecutter can save you time and effort by providing:</h6>
+                                        <p>
+                                            <ul>
+                                                <li>A well-structured project layout</li>
+                                                <li>Pre-configured settings for development and production environments</li>
+                                                <li>Integration with popular tools and services (e.g., Docker, Celery, Postgres)</li>
+                                                <li>Enhanced security configurations</li>
+                                                <li>Ready-to-use continuous integration and deployment setups</li>
+                                            </ul>
+                                        </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card d-none" id="helpbox">
+                                <div class="card-body">
+                                    <h5 id="card-title" class="card-title"></h5>
+                                    <p id="card-body" class="card-text"></p>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       role="switch"
+                                       id="showAdvancedOptionsToggle">
+                                <label class="form-check-label" for="showAdvancedOptionsToggle">Show advanced options</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="showAdvancedOptionsToggle">
-                        <label class="form-check-label" for="showAdvancedOptionsToggle">Show advanced options</label>
-                    </div>
-
                 </div>
             </div>
-        </div>
-    </div>
-{% endblock %}
-{{ bootstrap.load_js() }}
-<script>
+        {% endblock %}
+        {{ bootstrap.load_js() }}
+        <script>
     function attachOnclickListener() {
         const elements = document.querySelectorAll(".mb-3");
         elements.forEach(function (element) {
@@ -167,7 +193,11 @@
             const name = element.children[1].name
             element.onclick = function () {
                 showHelpPrompt(displayName, FIELD_CONFIG[name]["description"])
-            }
+            };
+            element.addEventListener("focusout", function() {
+                document.querySelector("#helpbox").classList.add("d-none");
+                document.querySelector("#faqbox").classList.remove("d-none");
+            });
         })
     }
     attachOnclickListener();
@@ -181,6 +211,6 @@
     [... document.getElementsByClassName("additional-options")].map(
         function(element){element.parentElement.classList.add("d-none")}
     );
-</script>
-</body>
+        </script>
+    </body>
 </html>
