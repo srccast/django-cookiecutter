@@ -13,7 +13,7 @@ from flask_bootstrap import Bootstrap5
 from flask_wtf import CSRFProtect, FlaskForm
 from wtforms import StringField, SubmitField, widgets
 from wtforms.fields.choices import SelectField, SelectMultipleField
-from wtforms.validators import URL, DataRequired, Email
+from wtforms.validators import DataRequired, Email
 
 ADDITIONAL_OPTIONS_KW = {"class": "additional-options"}
 
@@ -53,7 +53,7 @@ class CookieCutterForm(FlaskForm):
     project_slug = StringField(validators=[DataRequired()])
     description = StringField(validators=[DataRequired()])
     author_name = StringField(validators=[DataRequired()])
-    domain_name = StringField(validators=[DataRequired(), URL()])
+    domain_name = StringField(validators=[DataRequired()])
     email = StringField(validators=[DataRequired(), Email()])
     username_type = SelectField(
         choices=[
@@ -133,7 +133,7 @@ class CookieCutterForm(FlaskForm):
     windows = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
 
     use_async = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
-    use_drf = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+    use_drf = YesNoField(label="Use DRF", default="no", render_kw=ADDITIONAL_OPTIONS_KW)
 
     cloud_provider = SelectField(
         choices=[
