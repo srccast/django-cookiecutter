@@ -25,3 +25,8 @@ repos:
     hooks:
       - id: black
         types: [python]
+
+  - repo: https://github.com/djlint/djLint
+    rev: v1.34.1
+    hooks:
+      - id: djlint-reformat
