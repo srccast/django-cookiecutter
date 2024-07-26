@@ -35,14 +35,25 @@ services:
     depends_on:
       - docker
 
-  traefik:
+  traefik-production:
     image: traefik
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - "./services/traefik:/etc/traefik"
-      - "traefik:/etc/traefik/acme/"
+      - ./services/traefik/production/traefik.yaml:/etc/traefik/traefik.yaml
+      - traefik:/etc/traefik/acme/
+    deploy:
+      replicas: ${REPLICA_COUNT_TRAEFIK_PRODUCTION:-0}
+
+  traefik-local:
+    image: traefik
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/traefik/local/traefik.yaml:/etc/traefik/traefik.yaml
+    deploy:
+      replicas: ${REPLICA_COUNT_TRAEFIK_LOCAL:-1}
 
 volumes:
   data: {}
