@@ -5,11 +5,24 @@ entryPoints:
   web:
     address: :80
 
+  web-secure:
+    address: :443
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "hello@srccast.de"
+      storage: /etc/traefik/acme/acme.json
+      httpChallenge:
+        entryPoint: web
+
 http:
   routers:
-    to-flask:
-      rule: "PathPrefix(`/`)"
+    web-secure:
+      rule: "Host(`django-cookiecutter.srccast.com`)"
       service: web
+      tls:
+        certResolver: letsencrypt
 
   services:
     web:
