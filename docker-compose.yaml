@@ -39,8 +39,11 @@ services:
     image: traefik
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - "./services/traefik:/etc/traefik"
+      - "traefik:/etc/traefik/acme/"
 
 volumes:
   data: {}
+  traefik: {}
