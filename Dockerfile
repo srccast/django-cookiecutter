@@ -15,7 +15,7 @@ WORKDIR /data
 CMD /root/.local/bin/cookiecutter https://github.com/cookiecutter/cookiecutter-django --config-file /data/config.yaml --no-input
 
 
-FROM docker as cookiecutter_builder
+FROM docker AS cookiecutter_builder
 
 RUN apk add --no-cache bash
 
