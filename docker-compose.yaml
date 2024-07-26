@@ -9,8 +9,6 @@ services:
     environment:
       FLASK_RUN_HOST: 0.0.0.0
       DOCKER_HOST: tcp://docker:2375
-    ports:
-      - 5000:5000
     develop:
       watch:
         - action: rebuild
@@ -36,6 +34,13 @@ services:
     command: wait-for-it docker:2375 -t 30 -s -- docker --host=tcp://docker:2375 build /data -t python3.12_cookiecutter --target cookiecutter
     depends_on:
       - docker
+
+  traefik:
+    image: traefik
+    ports:
+      - "8000:80"
+    volumes:
+      - "./services/traefik:/etc/traefik"
 
 volumes:
   data: {}
