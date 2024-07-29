@@ -72,16 +72,6 @@ class CookieCutterForm(FlaskForm):
         default="None",
     )
     use_docker = YesNoField(default="yes")
-    postgresql_version = SelectField(
-        choices=[
-            "16",
-            "15",
-            "14",
-            "13",
-            "12",
-        ],
-        default="16",
-    )
 
     mail_service = SelectField(
         choices=[
@@ -113,6 +103,18 @@ class CookieCutterForm(FlaskForm):
     )
 
     # additional options
+    postgresql_version = SelectField(
+        choices=[
+            "16",
+            "15",
+            "14",
+            "13",
+            "12",
+        ],
+        default="16",
+        render_kw=ADDITIONAL_OPTIONS_KW,
+    )
+
     keep_local_envs_in_vcs = YesNoField(default="yes", render_kw=ADDITIONAL_OPTIONS_KW)
     version = StringField(
         validators=[DataRequired()], render_kw=ADDITIONAL_OPTIONS_KW, default="0.1"
