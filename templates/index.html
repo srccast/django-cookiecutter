@@ -25,15 +25,19 @@
             document.querySelector("#card-body").textContent = description;
         }
 
-        function showAdditionalOptions(){
+        function showAdditionalOptions() {
             const element = document.querySelector("#showAdvancedOptionsToggle");
-            if(element.checked){
-                [... document.getElementsByClassName("additional-options")].map(
-                    function(element){element.parentElement.classList.remove("d-none")}
+            if (element.checked) {
+                [...document.getElementsByClassName("additional-options")].map(
+                    function (element) {
+                        element.parentElement.classList.remove("d-none")
+                    }
                 );
-            }else{
-                [... document.getElementsByClassName("additional-options")].map(
-                    function(element){element.parentElement.classList.add("d-none")}
+            } else {
+                [...document.getElementsByClassName("additional-options")].map(
+                    function (element) {
+                        element.parentElement.classList.add("d-none")
+                    }
                 );
             }
         };
@@ -138,7 +142,7 @@
                             <div class="card" id="faqbox">
                                 <div class="card-body">
                                     <h5 class="card-title">Welcome to Django Cookiecutter online</h5>
-                                    <p class="card-text">
+                                    <div class="card-text">
                                         <h6>What is Django Cookiecutter?</h6>
                                         <p>
                                             Django Cookiecutter is a project template for Django,
@@ -150,35 +154,39 @@
                                         <h6>How to use Django Cookiecutter online?</h6>
                                         <p>
                                             To use Django Cookiecutter simply fill out the form to the left, then hit
-                                            submit and we'll prepare your repository as a zip file for you to download.
+                                            submit, and we'll prepare your repository as a zip file for you to download.
                                             Click any field to receive a short explanation what it's used for.
                                         </p>
-                                        <h6>Using Django Cookiecutter can save you time and effort by providing:</h6>
+                                        <h6>Why use Django Cookiecutter?</h6>
+                                        <p>Using Django Cookiecutter can save you time and effort by providing:</p>
+                                        <ul>
+                                            <li>A well-structured project layout</li>
+                                            <li>Pre-configured settings for development and production environments</li>
+                                            <li>Integration with popular tools and services (e.g., Docker, Celery, Postgres)</li>
+                                            <li>Enhanced security configurations</li>
+                                            <li>Ready-to-use continuous integration and deployment setups</li>
+                                        </ul>
+                                        <h6>Is this project open source?</h6>
                                         <p>
-                                            <ul>
-                                                <li>A well-structured project layout</li>
-                                                <li>Pre-configured settings for development and production environments</li>
-                                                <li>Integration with popular tools and services (e.g., Docker, Celery, Postgres)</li>
-                                                <li>Enhanced security configurations</li>
-                                                <li>Ready-to-use continuous integration and deployment setups</li>
-                                            </ul>
+                                            Absolutely, check out the source code over at
+                                            <a href="https://github.com/srccast/django-cookiecutter">GitHub</a>.
                                         </p>
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card d-none" id="helpbox">
-                                <div class="card-body">
-                                    <h5 id="card-title" class="card-title"></h5>
-                                    <p id="card-body" class="card-text"></p>
-                                </div>
+                        </div>
+                        <div class="card d-none" id="helpbox">
+                            <div class="card-body">
+                                <h5 id="card-title" class="card-title"></h5>
+                                <p id="card-body" class="card-text"></p>
                             </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       role="switch"
-                                       id="showAdvancedOptionsToggle">
-                                <label class="form-check-label" for="showAdvancedOptionsToggle">Show advanced options</label>
-                            </div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="showAdvancedOptionsToggle">
+                            <label class="form-check-label" for="showAdvancedOptionsToggle">Show advanced options</label>
                         </div>
                     </div>
                 </div>
@@ -194,22 +202,26 @@
             element.onclick = function () {
                 showHelpPrompt(displayName, FIELD_CONFIG[name]["description"])
             };
-            element.addEventListener("focusout", function() {
+            element.addEventListener("focusout", function () {
                 document.querySelector("#helpbox").classList.add("d-none");
                 document.querySelector("#faqbox").classList.remove("d-none");
             });
         })
     }
+
     attachOnclickListener();
 
-    function initialAdditionalOptions(){
+    function initialAdditionalOptions() {
         const element = document.getElementById("showAdvancedOptionsToggle");
         element.onchange = showAdditionalOptions;
     }
+
     initialAdditionalOptions();
 
-    [... document.getElementsByClassName("additional-options")].map(
-        function(element){element.parentElement.classList.add("d-none")}
+    [...document.getElementsByClassName("additional-options")].map(
+        function (element) {
+            element.parentElement.classList.add("d-none")
+        }
     );
         </script>
     </body>
