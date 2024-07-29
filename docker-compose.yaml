@@ -1,5 +1,5 @@
 services:
-  web:
+  cookiecutter:
     build:
       context: .
       target: app
@@ -25,7 +25,7 @@ services:
     volumes:
       - data:/data
 
-  cookiecutter_build:
+  cookiecutter-build:
     build:
       context: .
       target: cookiecutter_builder
