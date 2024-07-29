@@ -5,14 +5,9 @@ services:
       target: app
     depends_on:
       - docker
-    command: flask run
+    command: gunicorn "app:app" -b 0.0.0.0:5000
     environment:
-      FLASK_RUN_HOST: 0.0.0.0
       DOCKER_HOST: tcp://docker:2375
-    develop:
-      watch:
-        - action: rebuild
-          path: app.py
     volumes:
       - data:/data
     env_file:
@@ -38,9 +33,12 @@ services:
   traefik:
     image: traefik
     ports:
-      - "8000:8000"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./services/traefik/local/traefik.yaml:/etc/traefik/traefik.yaml
+      - ./services/traefik/production/traefik.yaml:/etc/traefik/traefik.yaml
+      - traefik:/etc/traefik/acme/
 
 volumes:
   data: {}
+  traefik: {}
