@@ -26,7 +26,7 @@ services:
       target: cookiecutter_builder
     volumes:
       - ./Dockerfile:/data/Dockerfile
-    command: wait-for-it docker:2375 -t 30 -s -- docker --host=tcp://docker:2375 build /data -t python3.12_cookiecutter --target cookiecutter
+    command: wait-for-it docker:2375 -t 30 -s -- docker --host=tcp://docker:2375 build /data -t cookiecutter:python3.12 --target cookiecutter
     depends_on:
       - docker
 
