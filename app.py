@@ -192,8 +192,9 @@ def index_post():
             yaml.dump(data, cookiecutter_file)
 
         client.containers.run(
-            image="python3.12_cookiecutter",
+            image="cookiecutter:python3.12",
             volumes=[f"{temp_dir}:/data"],
+            remove=True,
         )
 
         out_f = io.BytesIO()
