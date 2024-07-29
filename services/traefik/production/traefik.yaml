@@ -28,7 +28,7 @@ http:
     web:
       loadBalancer:
         servers:
-          - url: "http://web:5000"
+          - url: "http://cookiecutter:5000"
 
 
 providers:
