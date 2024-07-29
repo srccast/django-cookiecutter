@@ -5,7 +5,7 @@ services:
       target: app
     depends_on:
       - docker
-    command: gunicorn "app:app" -b 0.0.0.0:5000
+    command: gunicorn "app:app" -b 0.0.0.0:5000 -w 4
     environment:
       DOCKER_HOST: tcp://docker:2375
     volumes:
