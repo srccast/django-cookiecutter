@@ -191,10 +191,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    {% endblock %}
-    {{ bootstrap.load_js() }}
-    <script>
+        {% endblock %}
+        {{ bootstrap.load_js() }}
+        <script>
     function attachOnclickListener() {
         const elements = document.querySelectorAll(".mb-3");
         elements.forEach(function (element) {
@@ -224,6 +223,6 @@
             element.parentElement.classList.add("d-none")
         }
     );
-    </script>
-</body>
+        </script>
+    </body>
 </html>
