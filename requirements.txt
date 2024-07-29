@@ -5,3 +5,4 @@ Flask-WTF
 pyyaml
 python-dotenv
 email_validator
+gunicorn
