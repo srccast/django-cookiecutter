@@ -7,26 +7,39 @@ services:
       - docker
     command: gunicorn "app:app" -b 0.0.0.0:5000 -w 4
     environment:
-      DOCKER_HOST: tcp://docker:2375
+      DOCKER_TLS_CERTDIR: /certs
+      DOCKER_TLS_VERIFY: 1
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_HOST: tcp://docker:2376
     volumes:
       - data:/data
+      - docker-certs-client:/certs/client:ro
     env_file:
       - .env
 
   docker:
     image: docker:dind
     privileged: true
-    entrypoint: dockerd --host tcp://0.0.0.0:2375
     volumes:
       - data:/data
+      - docker-certs-ca:/certs
+      - docker-certs-client:/certs/client
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
 
   cookiecutter-build:
     build:
       context: .
       target: cookiecutter_builder
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+      DOCKER_TLS_VERIFY: 1
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_HOST: tcp://docker:2376
     volumes:
       - ./Dockerfile:/data/Dockerfile
-    command: wait-for-it docker:2375 -t 30 -s -- docker --host=tcp://docker:2375 build /data -t cookiecutter:python3.12 --target cookiecutter
+      - docker-certs-client:/certs/client:ro
+    command: wait-for-it docker:2376 -t 30 -s -- docker build /data -t cookiecutter:python3.12 --target cookiecutter
     depends_on:
       - docker
 
@@ -42,3 +55,5 @@ services:
 volumes:
   data: {}
   traefik: {}
+  docker-certs-ca: {}
+  docker-certs-client: {}
