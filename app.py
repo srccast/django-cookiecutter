@@ -15,7 +15,7 @@ from wtforms import StringField, SubmitField, widgets
 from wtforms.fields.choices import SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Email
 
-ADDITIONAL_OPTIONS_KW = {"class": "additional-options"}
+ADDITIONAL_OPTIONS_KW = {"class": ""}
 
 load_dotenv()
 
@@ -134,8 +134,8 @@ class CookieCutterForm(FlaskForm):
     timezone = StringField(default="UTC", render_kw=ADDITIONAL_OPTIONS_KW)
     windows = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
 
-    use_async = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
-    use_drf = YesNoField(label="Use DRF", default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+    use_async = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+    use_drf = YesNoField(label="Use DRF", render_kw=ADDITIONAL_OPTIONS_KW)
 
     cloud_provider = SelectField(
         choices=[
@@ -163,10 +163,10 @@ class CookieCutterForm(FlaskForm):
 
     use_mailpit = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
 
-    use_whitenoise = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
+    use_whitenoise = YesNoField(default="y", render_kw=ADDITIONAL_OPTIONS_KW)
     use_heroku = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
 
-    debug = YesNoField(default="no", render_kw=ADDITIONAL_OPTIONS_KW)
+    debug = YesNoField(render_kw=ADDITIONAL_OPTIONS_KW)
 
     submit = SubmitField("Submit")
 
