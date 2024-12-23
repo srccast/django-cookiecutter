@@ -15,7 +15,7 @@ from wtforms import StringField, SubmitField, widgets
 from wtforms.fields.choices import SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Email
 
-ADDITIONAL_OPTIONS_KW = {"class": "additional-options"}
+ADDITIONAL_OPTIONS_KW = {"class": ""}
 
 load_dotenv()
 
