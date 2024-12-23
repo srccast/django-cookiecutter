@@ -29,12 +29,12 @@ csrf = CSRFProtect(app)
 
 
 class YesNoField(SelectField):
-    def __init__(self, *args, default="no", **kwargs):
+    def __init__(self, *args, default="n", **kwargs):
         super().__init__(
             *args,
             choices=[
-                "yes",
-                "no",
+                ("y", "yes"),
+                ("n", "no"),
             ],
             default=default,
             **kwargs,
